@@ -6,6 +6,7 @@ import android.support.v4.util.SparseArrayCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public final class SparseArrays {
 
     public static <T> List<T> asList(SparseArrayCompat<T> sparseArray) {

@@ -2,6 +2,7 @@ package com.devspark.metro.util;
 
 import android.content.SharedPreferences;
 
+@SuppressWarnings("unused")
 public class IntPreference {
     private final SharedPreferences mPreferences;
     private final String mKey;
