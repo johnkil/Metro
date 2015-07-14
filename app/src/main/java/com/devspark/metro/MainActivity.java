@@ -2,7 +2,6 @@ package com.devspark.metro;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,8 +9,8 @@ import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.devspark.metro.util.IntPreference;
 import com.devspark.metro.util.Locations;
 import com.devspark.metro.util.SparseArrays;
 import com.google.android.gms.common.ConnectionResult;
@@ -21,9 +20,7 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String KEY_CITY_ID = "city_id";
-
-    private SharedPreferences mPrefs;
+    private IntPreference mCityIdPref;
     private GoogleApiClient mGoogleApiClient;
     private SubsamplingScaleImageView mMapView;
 
@@ -35,21 +32,19 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPrefs = getPreferences(MODE_PRIVATE);
-
         mMapView = (SubsamplingScaleImageView) findViewById(R.id.map);
-        // mMapView.setDebug(BuildConfig.DEBUG);
         mMapView.setDoubleTapZoomDpi(480);
         mMapView.setMinimumDpi(320);
 
-        FloatingActionButton settingsButton =
-                (FloatingActionButton) findViewById(R.id.fab_settings);
+        FloatingActionButton settingsButton = (FloatingActionButton) findViewById(R.id.fab_settings);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCityChooser();
             }
         });
+
+        mCityIdPref = new IntPreference(getPreferences(MODE_PRIVATE), "city_id");
 
         initCities();
         buildGoogleApiClient();
@@ -69,22 +64,8 @@ public class MainActivity extends Activity implements
 
     private void initCities() {
         mCities = new SparseArrayCompat<>(2);
-
-        City moscow = new City(
-                City.ID_MSK,
-                getString(R.string.city_moscow),
-                ImageSource.resource(R.drawable.map_moscow).dimensions(4211, 5143),
-                ImageSource.resource(R.drawable.map_moscow_preview),
-                Locations.moscowLocation());
-        City spb = new City(
-                City.ID_SPB,
-                getString(R.string.city_spb),
-                ImageSource.resource(R.drawable.map_spb).dimensions(4233, 5200),
-                ImageSource.resource(R.drawable.map_spb_preview),
-                Locations.spbLocation());
-
-        mCities.append(moscow.id, moscow);
-        mCities.append(spb.id, spb);
+        mCities.append(City.ID_MSK, City.createMoscow(this));
+        mCities.append(City.ID_SPB, City.createSpb(this));
     }
 
     private void buildGoogleApiClient() {
@@ -122,24 +103,22 @@ public class MainActivity extends Activity implements
         }
         mMapView.setImage(city.imageSource, city.previewImageSource);
         mCurrentCity = city;
-        if (mPrefs.contains(KEY_CITY_ID) && mPrefs.getInt(KEY_CITY_ID, 0) != city.id) {
-            mPrefs.edit().putInt(KEY_CITY_ID, city.id).apply();
+        if (!mCityIdPref.isSet() || mCityIdPref.get() != city.id) {
+            mCityIdPref.set(city.id);
         }
     }
 
     private City getDefaultCity() {
-        return mCities.get(mPrefs.getInt(KEY_CITY_ID, City.ID_MSK));
+        return mCities.get(mCityIdPref.get());
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location lastLocation =
-                LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         City currentCity = getDefaultCity();
         if (lastLocation != null) {
-            currentCity = Locations.nearestCity(
-                    lastLocation, SparseArrays.asList(mCities), currentCity);
+            currentCity = Locations.nearestCity(lastLocation, SparseArrays.asList(mCities), currentCity);
         }
         selectCity(currentCity);
     }

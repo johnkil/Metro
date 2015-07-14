@@ -9,14 +9,6 @@ import java.util.List;
 public final class Locations {
     private static final float CITY_RADIUS = 30000f;
 
-    public static Location moscowLocation() {
-        return createLocation(55.749792, 37.632495);
-    }
-
-    public static Location spbLocation() {
-        return createLocation(59.9174455, 30.3250575);
-    }
-
     public static Location createLocation(double lat, double lng) {
         Location location = new Location("");
         location.setLatitude(lat);
