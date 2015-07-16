@@ -2,7 +2,7 @@
 
     <style name="Theme.Metro" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
-        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">@bool/translucentNavBar</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>

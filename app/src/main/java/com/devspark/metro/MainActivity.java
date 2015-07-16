@@ -9,10 +9,11 @@ import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.devspark.metro.util.IntPreference;
 import com.devspark.metro.util.Locations;
 import com.devspark.metro.util.SparseArrays;
+import com.devspark.metro.widget.MetroMapView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -20,12 +21,12 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final int MAP_DOUBLE_TAP_ZOOM_DPI = 480;
-    private static final int MAP_MINIMUM_DPI = 320;
+    private static final String STATE_MAP_VIEW = "map_view";
+    private static final String STATE_CITY = "city";
 
+    private MetroMapView mMetroMapView;
     private IntPreference mCityIdPref;
     private GoogleApiClient mGoogleApiClient;
-    private SubsamplingScaleImageView mMapView;
 
     private SparseArrayCompat<City> mCities;
     private City mCurrentCity;
@@ -35,10 +36,7 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMapView = (SubsamplingScaleImageView) findViewById(R.id.map);
-        mMapView.setDoubleTapZoomDpi(MAP_DOUBLE_TAP_ZOOM_DPI);
-        mMapView.setMinimumDpi(MAP_MINIMUM_DPI);
-
+        mMetroMapView = (MetroMapView) findViewById(R.id.map);
         FloatingActionButton settingsButton = (FloatingActionButton) findViewById(R.id.fab_settings);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +47,13 @@ public class MainActivity extends Activity implements
 
         mCityIdPref = new IntPreference(getPreferences(MODE_PRIVATE), "city_id");
         initCities();
-
         buildGoogleApiClient();
+
+        if (savedInstanceState != null) {
+            ImageViewState mapState = (ImageViewState) savedInstanceState.getSerializable(STATE_MAP_VIEW);
+            mCurrentCity = savedInstanceState.getParcelable(STATE_CITY);
+            mMetroMapView.showMap(mCurrentCity, mapState);
+        }
     }
 
     @Override
@@ -63,6 +66,13 @@ public class MainActivity extends Activity implements
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(STATE_MAP_VIEW, mMetroMapView.getState());
+        outState.putParcelable(STATE_CITY, mCurrentCity);
+        super.onSaveInstanceState(outState);
     }
 
     private void initCities() {
@@ -104,8 +114,8 @@ public class MainActivity extends Activity implements
         if (mCurrentCity != null && mCurrentCity.id == city.id) {
             return;
         }
-        mMapView.setImage(city.imageSource, city.previewImageSource);
         mCurrentCity = city;
+        mMetroMapView.showMap(city);
         if (!mCityIdPref.isSet() || mCityIdPref.get() != city.id) {
             mCityIdPref.set(city.id);
         }

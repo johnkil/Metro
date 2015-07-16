@@ -11,9 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Metro">
 
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize">
+        <activity android:name=".MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
