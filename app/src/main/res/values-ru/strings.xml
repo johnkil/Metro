@@ -1,10 +1,8 @@
 <resources>
 
     <string name="app_name">Метро</string>
-
     <string name="city_moscow">Москва</string>
     <string name="city_spb">Санкт-Петербург</string>
-
     <string name="choose_city">Выберите город</string>
 
 </resources>

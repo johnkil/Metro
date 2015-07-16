@@ -20,6 +20,9 @@ import com.google.android.gms.location.LocationServices;
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int MAP_DOUBLE_TAP_ZOOM_DPI = 480;
+    private static final int MAP_MINIMUM_DPI = 320;
+
     private IntPreference mCityIdPref;
     private GoogleApiClient mGoogleApiClient;
     private SubsamplingScaleImageView mMapView;
@@ -33,8 +36,8 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         mMapView = (SubsamplingScaleImageView) findViewById(R.id.map);
-        mMapView.setDoubleTapZoomDpi(480);
-        mMapView.setMinimumDpi(320);
+        mMapView.setDoubleTapZoomDpi(MAP_DOUBLE_TAP_ZOOM_DPI);
+        mMapView.setMinimumDpi(MAP_MINIMUM_DPI);
 
         FloatingActionButton settingsButton = (FloatingActionButton) findViewById(R.id.fab_settings);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -45,15 +48,15 @@ public class MainActivity extends Activity implements
         });
 
         mCityIdPref = new IntPreference(getPreferences(MODE_PRIVATE), "city_id");
-
         initCities();
+
         buildGoogleApiClient();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (mCurrentCity == null) mGoogleApiClient.connect();
     }
 
     @Override
@@ -129,5 +132,6 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 }
