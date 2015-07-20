@@ -1,7 +1,7 @@
 Metro
 =====
 
-Subway maps of Moscow and Saint Petersburg.
+Modern subway maps of Moscow and Saint Petersburg.
 
 ![image](https://raw.githubusercontent.com/johnkil/Metro/master/art/promo.png)
 
