@@ -24,7 +24,6 @@
             android:layout_marginRight="@dimen/fab_margin_right"
             android:src="@drawable/ic_fab_settings"
             app:backgroundTint="#EFFF"
-            app:borderWidth="0dp"
             app:elevation="@dimen/fab_elevation"
             tools:ignore="RtlHardcoded" />
 
