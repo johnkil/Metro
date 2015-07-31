@@ -49,9 +49,9 @@ public class MainActivity extends Activity implements
         initCities();
         buildGoogleApiClient();
 
-        if (savedInstanceState != null) {
-            ImageViewState mapState = (ImageViewState) savedInstanceState.getSerializable(STATE_MAP_VIEW);
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_CITY)) {
             mCurrentCity = savedInstanceState.getParcelable(STATE_CITY);
+            ImageViewState mapState = (ImageViewState) savedInstanceState.getSerializable(STATE_MAP_VIEW);
             mMetroMapView.showMap(mCurrentCity, mapState);
         }
     }
@@ -70,8 +70,10 @@ public class MainActivity extends Activity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(STATE_MAP_VIEW, mMetroMapView.getState());
-        outState.putParcelable(STATE_CITY, mCurrentCity);
+        if (mCurrentCity != null) {
+            outState.putParcelable(STATE_CITY, mCurrentCity);
+            outState.putSerializable(STATE_MAP_VIEW, mMetroMapView.getState());
+        }
         super.onSaveInstanceState(outState);
     }
 
