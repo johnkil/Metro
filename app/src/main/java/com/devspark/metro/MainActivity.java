@@ -264,7 +264,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-            ((MainActivity) getActivity()).onDialogDismissed();
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).onDialogDismissed();
+            }
         }
     }
 }
