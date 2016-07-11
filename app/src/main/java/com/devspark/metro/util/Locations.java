@@ -2,7 +2,7 @@ package com.devspark.metro.util;
 
 import android.location.Location;
 
-import com.devspark.metro.City;
+import com.devspark.metro.data.City;
 
 import java.util.List;
 

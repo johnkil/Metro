@@ -4,6 +4,16 @@ Change Log
 
 ## Version 1.0.2
 
+_2016-07-11_
+
+ * Update version of maps (moscow-2.1.2, spb-0.5.1).
+ * Support `subsampling-scale-image-view` v3.5.0.
+ * Enable strict mode in debug builds.
+ * Reduce size of application.
+
+
+## Version 1.0.2
+
 _2015-10-27_
 
  * Fix issue: Location of FAB on pre L devices.
