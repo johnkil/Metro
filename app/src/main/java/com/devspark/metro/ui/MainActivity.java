@@ -19,12 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.davemorrissey.labs.subscaleview.ImageViewState;
-import com.devspark.metro.data.City;
 import com.devspark.metro.R;
+import com.devspark.metro.data.City;
+import com.devspark.metro.ui.widget.MetroMapView;
 import com.devspark.metro.util.IntPreference;
 import com.devspark.metro.util.Locations;
 import com.devspark.metro.util.SparseArrays;
-import com.devspark.metro.ui.widget.MetroMapView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity
         return mCities.get(mCityIdPref.get());
     }
 
+    @SuppressWarnings("MissingPermission")
     @RequiresPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     private void detectCurrentCity() {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -210,7 +211,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -253,7 +255,8 @@ public class MainActivity extends AppCompatActivity
             return dialogFragment;
         }
 
-        public GoogleApiErrorDialog() {}
+        public GoogleApiErrorDialog() {
+        }
 
         @NonNull
         @Override

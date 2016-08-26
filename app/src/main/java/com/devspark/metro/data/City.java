@@ -37,7 +37,7 @@ public class City implements Parcelable {
                 ID_MSK,
                 context.getString(R.string.city_moscow),
                 Locations.createLocation(55.749792, 37.632495),
-                R.drawable.map_moscow, 4210, 5142,
+                R.drawable.map_moscow, 4716, 5029,
                 R.drawable.map_moscow_preview);
     }
 
