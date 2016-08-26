@@ -8,16 +8,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 dependencies {
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.google.android.gms:play-services-location:9.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') { transitive = true; }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') { transitive = true; }
 }
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "com.devspark.metro"
