@@ -2,7 +2,14 @@ Change Log
 ==========
 
 
-## Version 1.0.2
+## Version 1.2.0
+
+_2016-08-29_
+
+ * Update Moscow metro map ([source](http://russianmetro.ru/)).
+
+
+## Version 1.1.0
 
 _2016-07-11_
 
